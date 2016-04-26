@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>我所理解的java反射 | liangSJ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为什么要使用反射   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。   在某些情况了，你新的类在你的程序编译好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我所理解的java反射">
+<meta property="og:url" content="http://yoursite.com/2016/04/20/RIIT/index.html">
+<meta property="og:site_name" content="liangSJ">
+<meta property="og:description" content="为什么要使用反射   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。   在某些情况了，你新的类在你的程序编译好">
+<meta property="og:updated_time" content="2016-04-26T02:28:02.014Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我所理解的java反射">
+<meta name="twitter:description" content="为什么要使用反射   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。   在某些情况了，你新的类在你的程序编译好">
+  
+    <link rel="alternative" href="/atom.xml" title="liangSJ" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
+  
+  
+  
+      <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+      <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.9/clipboard.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+          fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+          scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.0.9/scrollreveal.min.js"
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">liangSJ</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:lljs123@163.com" title="Email"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="#" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">计算机科学爱好者</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">liangSJ</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">liangSJ</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:lljs123@163.com" title="Email"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="#" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-RIIT" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/20/RIIT/" class="article-date">
+      <time datetime="2016-04-20T11:24:29.000Z" itemprop="datePublished">2016-04-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      我所理解的java反射
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="为什么要使用反射"><a href="#为什么要使用反射" class="headerlink" title="为什么要使用反射"></a>为什么要使用反射</h2><p>   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。<br>   在某些情况了，你新的类在你的程序编译好很久后才会出现。比如：你从互联网上下载一段代码，你明确知道，这段代码代表的是一个类。可是，你怎么才能很使用它呢。反射就是我们用于解决这种问题的工具。</p>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>一切都是对象,是java的基本设计思想。在我们编写每一个.java文件后，编译器会将我们的.java文件编译成.class文件。当我们调用name.class的静态方法时，jvm的类加载器会将我们的class文件加载进内存。这个从侧面证实了，一个类的构造函数也是静态函数，虽然他们有static关键字。class也是一个对象。我们可以利用这个对象。来创建“常规”的对象.从上面的描述，我们也可以了解到，java是动态加载的语言。当类首次被引用的时候，才会被加载进内存。这点c++中就很难做到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、Class.forname(className);  //可以不是使用对象，拿到这个类的Class引用。</span><br><span class="line">2、Class name = name.class;   //类字面常量生成Class引用。在编译时就会受到检查</span><br></pre></td></tr></table></figure>
+<p>值得注意的一点，使用方法1获得类是的引用时，其静态成员会被初始化。<br>使用方法2时，其静态成员只有在其类的静态成员第一次被使用时，才会被初始化。</p>
+<p> 泛型和Class注意点<br> 假设 存在 父类 Father<br> 子类 Child extends father<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;Child&gt; c=Child.classm</span><br></pre></td></tr></table></figure><br>因为编译时就知道c.getSuperclass()得到的不只是Father这个类，更明确到他是Child的父类。</p>
+<h2 id="isInstance-和-isInstanceOf"><a href="#isInstance-和-isInstanceOf" class="headerlink" title="isInstance 和 isInstanceOf"></a>isInstance 和 isInstanceOf</h2><p>isInstanceOf和isInstance这两个方法都是用来确定对象的类型。<br>但是用起来有一些差别。总体来说，isInstanceOf实在编译期间就能明确对象类型的。而isInstance实在运行期间才能确定。<br>用法也稍微也不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A a = new A();</span><br><span class="line">a.instanceOf A; //true</span><br><span class="line">a.getClass().instanceOf(A);//true</span><br></pre></td></tr></table></figure><br>值得注意的是，isInstance比较影响效率，在能使用isInstanceOf 的情况下，尽可能的使用isInstanceOf</p>
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p>代理模式事实上就是在具体实现类中间加一个中间层。把具体实现隔离开来。<br>在java中，出来能实现我们经常见到的代理模式，我们还能通过实现接口InvocationHanler来实现动态代理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public List getList(final List list)&#123;</span><br><span class="line">    return (List) Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[] &#123; List.class&#125;</span><br><span class="line">                                 new InvocationHanler()&#123;</span><br><span class="line">                                         public Object invoke(Object proxy, Method method Object[] args) throws Throwable&#123;</span><br><span class="line">                                             if(&quot;add&quot;.equals(method.getName()))&#123;</span><br><span class="line">                                                 throw new UnsupportdOperationException();</span><br><span class="line">                                             &#125;else&#123;</span><br><span class="line">                                                 return method.invoke(list,args);</span><br><span class="line">                                             &#125;</span><br><span class="line">                                         &#125;</span><br><span class="line">                                     &#125;                               );&#125;</span><br></pre></td></tr></table></figure>
+<p>上面例子是执行List.class的方法，如果遇到add方法，则抛出异常。剩下的方法正常执行。<br>例子来自（<a href="http://www.infoq.com/cn/articles/cf-java-reflection-dynamic-proxy）" target="_blank" rel="external">http://www.infoq.com/cn/articles/cf-java-reflection-dynamic-proxy）</a></p>
+<h2 id="反射的危害"><a href="#反射的危害" class="headerlink" title="反射的危害"></a>反射的危害</h2><p>事实上，反射是很强大的。但是伴随而来的是权限方面的难以管理。原则上来说，反射只要知道方法名，就能调用此方法。private关键字也起不到保护的作用。<br>但是，有趣的是，final域相对是安全的，运行是，修改它，系统并不会抛出异常，但是事实上它的值并没有被修改。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/04/26/hello-world/">
+                    Hello World
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/19/我对java-String的理解/">
+                    String
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要使用反射"><span class="toc-number">1.</span> <span class="toc-text">为什么要使用反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class"><span class="toc-number">2.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#isInstance-和-isInstanceOf"><span class="toc-number">3.</span> <span class="toc-text">isInstance 和 isInstanceOf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态代理"><span class="toc-number">4.</span> <span class="toc-text">动态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反射的危害"><span class="toc-number">5.</span> <span class="toc-text">反射的危害</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <li id="bds_twi"><a href="#" class="bds_twi" data-cmd="twi" title="分享到推特"></a></li>
+            <li id="bds_tsina"><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a></li>
+            <li id="bds_sqq"><a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a></li>
+            <li id="bds_copy"><a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a></li>
+            <li id="bds_mail"><a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a></li>
+            <li id="bds_weixin"><a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a></li>
+            <li id="bds_more"><a href="#" class="bds_more" data-cmd="more"></i></a></li>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"我所理解的java反射　| liangSJ　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/04/26/hello-world/" title="上一篇: Hello World">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/19/我对java-String的理解/" title="下一篇: String">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/RIIT/">我所理解的java反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/19/我对java-String的理解/">String</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 liangSJ
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
