@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/04/20/RIIT/index.html">
 <meta property="og:site_name" content="liangSJ">
 <meta property="og:description" content="为什么要使用反射   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。   在某些情况了，你新的类在你的程序编译好">
-<meta property="og:updated_time" content="2016-04-26T02:28:02.014Z">
+<meta property="og:updated_time" content="2016-04-28T01:33:34.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我所理解的java反射">
 <meta name="twitter:description" content="为什么要使用反射   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。   在某些情况了，你新的类在你的程序编译好">
@@ -154,7 +154,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
                     </div>
                 </section>
                 
@@ -265,11 +265,11 @@
       
           
         <h2 id="为什么要使用反射"><a href="#为什么要使用反射" class="headerlink" title="为什么要使用反射"></a>为什么要使用反射</h2><p>   在面向对象的编程中，多态是最常用的概念。基本上，面向对象的思想之所以能这么流行，能出现多种灵活的设计模式，多态的特征是功不可没的。多态，使我们将抽象和具体隔离。使得父类给出接口，子类具体实现。降低了编程的复杂性。但在某些情况下，在我们将子类向上转型后，有希望知道这个类的具体类型，和操作某些子类特有的行为。这时候，反射能帮上我们的忙。<br>   在某些情况了，你新的类在你的程序编译好很久后才会出现。比如：你从互联网上下载一段代码，你明确知道，这段代码代表的是一个类。可是，你怎么才能很使用它呢。反射就是我们用于解决这种问题的工具。</p>
-<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>一切都是对象,是java的基本设计思想。在我们编写每一个.java文件后，编译器会将我们的.java文件编译成.class文件。当我们调用name.class的静态方法时，jvm的类加载器会将我们的class文件加载进内存。这个从侧面证实了，一个类的构造函数也是静态函数，虽然他们有static关键字。class也是一个对象。我们可以利用这个对象。来创建“常规”的对象.从上面的描述，我们也可以了解到，java是动态加载的语言。当类首次被引用的时候，才会被加载进内存。这点c++中就很难做到。</p>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>一切都是对象,是java的基本设计思想。在我们编写每一个.java文件后，编译器会将我们的.java文件编译成.class文件。当我们调用name.class的静态方法时，jvm的类加载器会将我们的class文件加载进内存。这个从侧面证实了，一个类的构造函数也是静态函数，虽然他们没有static关键字。class也是一个对象。我们可以利用这个对象。来创建“常规”的对象.从上面的描述，我们也可以了解到，java是动态加载的语言。当类首次被引用的时候，才会被加载进内存。这点c++中就很难做到。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、Class.forname(className);  //可以不是使用对象，拿到这个类的Class引用。</span><br><span class="line">2、Class name = name.class;   //类字面常量生成Class引用。在编译时就会受到检查</span><br></pre></td></tr></table></figure>
 <p>值得注意的一点，使用方法1获得类是的引用时，其静态成员会被初始化。<br>使用方法2时，其静态成员只有在其类的静态成员第一次被使用时，才会被初始化。</p>
 <p> 泛型和Class注意点<br> 假设 存在 父类 Father<br> 子类 Child extends father<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;Child&gt; c=Child.classm</span><br></pre></td></tr></table></figure><br>因为编译时就知道c.getSuperclass()得到的不只是Father这个类，更明确到他是Child的父类。</p>
-<h2 id="isInstance-和-isInstanceOf"><a href="#isInstance-和-isInstanceOf" class="headerlink" title="isInstance 和 isInstanceOf"></a>isInstance 和 isInstanceOf</h2><p>isInstanceOf和isInstance这两个方法都是用来确定对象的类型。<br>但是用起来有一些差别。总体来说，isInstanceOf实在编译期间就能明确对象类型的。而isInstance实在运行期间才能确定。<br>用法也稍微也不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A a = new A();</span><br><span class="line">a.instanceOf A; //true</span><br><span class="line">a.getClass().instanceOf(A);//true</span><br></pre></td></tr></table></figure><br>值得注意的是，isInstance比较影响效率，在能使用isInstanceOf 的情况下，尽可能的使用isInstanceOf</p>
+<h2 id="isInstance-和-isInstanceOf"><a href="#isInstance-和-isInstanceOf" class="headerlink" title="isInstance 和 isInstanceOf"></a>isInstance 和 isInstanceOf</h2><p>isInstanceOf和isInstance这两个方法都是用来确定对象的类型。<br>但是用起来有一些差别。总体来说，isInstanceOf实在编译期间就能明确对象类型的。而isInstance实在运行期间才能确定。<br>用法也稍微也不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A a = new A();</span><br><span class="line">a.instanceOf A; //true</span><br><span class="line">a.getClass().instance(A);//true</span><br></pre></td></tr></table></figure><br>值得注意的是，isInstance比较影响效率，在能使用isInstanceOf 的情况下，尽可能的使用isInstanceOf</p>
 <h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p>代理模式事实上就是在具体实现类中间加一个中间层。把具体实现隔离开来。<br>在java中，出来能实现我们经常见到的代理模式，我们还能通过实现接口InvocationHanler来实现动态代理。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public List getList(final List list)&#123;</span><br><span class="line">    return (List) Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[] &#123; List.class&#125;</span><br><span class="line">                                 new InvocationHanler()&#123;</span><br><span class="line">                                         public Object invoke(Object proxy, Method method Object[] args) throws Throwable&#123;</span><br><span class="line">                                             if(&quot;add&quot;.equals(method.getName()))&#123;</span><br><span class="line">                                                 throw new UnsupportdOperationException();</span><br><span class="line">                                             &#125;else&#123;</span><br><span class="line">                                                 return method.invoke(list,args);</span><br><span class="line">                                             &#125;</span><br><span class="line">                                         &#125;</span><br><span class="line">                                     &#125;                               );&#125;</span><br></pre></td></tr></table></figure>
 <p>上面例子是执行List.class的方法，如果遇到add方法，则抛出异常。剩下的方法正常执行。<br>例子来自（<a href="http://www.infoq.com/cn/articles/cf-java-reflection-dynamic-proxy）" target="_blank" rel="external">http://www.infoq.com/cn/articles/cf-java-reflection-dynamic-proxy）</a></p>
@@ -396,7 +396,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/RIIT/">我所理解的java反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/19/我对java-String的理解/">String</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/concurrency/">concurrency</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/generics/">generics</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/RIIT/">我所理解的java反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/19/我对java-String的理解/">String</a></li></ul>
 
 
 

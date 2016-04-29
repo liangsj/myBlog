@@ -3,24 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>about | liangSJ</title>
+  <title>concurrency | liangSJ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人简介liangsj，游荡在互联网公司和学校的程序员，喜欢折腾各种技术。
-经历本科：天津大学硕士：中国矿业大学经历：      1、在昂腾公司实习，负责物联网项目的安卓部分。独立负责莫比自行车，体重秤、跑步机android端开放。参与后台服务器开发。      2、现任老虎地图，android项目组负责人。负责地图生产工具、地图android端的开发、维护。
-个人简介程序员，计算机科学爱好者。写">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+  <meta name="description" content="并发编程   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="concurrency">
+<meta property="og:url" content="http://yoursite.com/2016/04/26/concurrency/index.html">
 <meta property="og:site_name" content="liangSJ">
-<meta property="og:description" content="个人简介liangsj，游荡在互联网公司和学校的程序员，喜欢折腾各种技术。
-经历本科：天津大学硕士：中国矿业大学经历：      1、在昂腾公司实习，负责物联网项目的安卓部分。独立负责莫比自行车，体重秤、跑步机android端开放。参与后台服务器开发。      2、现任老虎地图，android项目组负责人。负责地图生产工具、地图android端的开发、维护。
-个人简介程序员，计算机科学爱好者。写">
-<meta property="og:updated_time" content="2016-04-26T02:19:58.998Z">
+<meta property="og:description" content="并发编程   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度">
+<meta property="og:updated_time" content="2016-04-29T02:36:08.554Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="个人简介liangsj，游荡在互联网公司和学校的程序员，喜欢折腾各种技术。
-经历本科：天津大学硕士：中国矿业大学经历：      1、在昂腾公司实习，负责物联网项目的安卓部分。独立负责莫比自行车，体重秤、跑步机android端开放。参与后台服务器开发。      2、现任老虎地图，android项目组负责人。负责地图生产工具、地图android端的开发、维护。
-个人简介程序员，计算机科学爱好者。写">
+<meta name="twitter:title" content="concurrency">
+<meta name="twitter:description" content="并发编程   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度">
   
     <link rel="alternative" href="/atom.xml" title="liangSJ" type="application/atom+xml">
   
@@ -50,7 +44,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -232,11 +226,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-concurrency" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/about/index.html" class="article-date">
-      <time datetime="2016-04-14T02:12:45.000Z" itemprop="datePublished">2016-04-14</time>
+      <a href="/2016/04/26/concurrency/" class="article-date">
+      <time datetime="2016-04-26T03:27:31.000Z" itemprop="datePublished">2016-04-26</time>
 </a>
     </div>
   
@@ -249,7 +243,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      concurrency
     </h1>
   
 
@@ -259,6 +253,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/concurrency/">concurrency</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -266,44 +264,12 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
-
-
-          
-        <h2 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h2><p>liangsj，游荡在互联网公司和学校的程序员，喜欢折腾各种技术。</p>
-<h2 id="经历"><a href="#经历" class="headerlink" title="经历"></a>经历</h2><p>本科：天津大学<br>硕士：中国矿业大学<br>经历：<br>      1、在昂腾公司实习，负责物联网项目的安卓部分。独立负责莫比自行车，体重秤、跑步机android端开放。参与后台服务器开发。<br>      2、现任老虎地图，android项目组负责人。负责地图生产工具、地图android端的开发、维护。</p>
-<h2 id="个人简介-1"><a href="#个人简介-1" class="headerlink" title="个人简介"></a>个人简介</h2><p>程序员，计算机科学爱好者。写着上层业务赚钱，研究底层写论文。书读不少，但是还是一问三不知。坚信技术改变世界。人前自称码农，人后自称软件工程师。各种技术初学者，在不断的向上爬。目前研究android，在各个公司，码着android代码养家户口。热爱运动，游泳，健身。</p>
+        <h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><p>   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。<br>  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度的最小单位。利用并发变成的技术，可以将任务分为不同的部分。充分利用CPU时间。在面对较长时间阻塞时，采用并发技术所带来的好处能覆盖掉上下文切换的损失。当然，进程或者线程增加了同步的成本，在操作同一资源时，同步往往是最难处理的。<br>  在不同的设计中，对并发技术也做了诸多限制。就android而言，在ViewRoot下绘制的UI界面，是不支持多线程的，也就是，只能在主线程内绘制UI界面（当然，有特定的组件能支持多线程绘制）。确保线程的安全。</p>
+<h2 id="java-中的并发"><a href="#java-中的并发" class="headerlink" title="java 中的并发"></a>java 中的并发</h2><p>java是支持多线程的语言。特别是在一些GUI项目和web jsp项目上，多线程是不可或缺的。<br>1、Runnable Thread<br>在java中，Runnable 这个接口可以理解为一下可以放在任务队列上的一个任务。个人认为取名为Runnable有些令人困惑，叫task会不会更加清晰。Thread 这个类可以把他看成一个线程，其中他的start方法，会向系统申请一个线程，并执行写在run()中的代码。<br>在写多线程任务时，一般有两种写法，实现接口 Runnable 将要执行的代码段写入run()中，或者直接继承Thread，复写run().两种方法都可以采用。但是我一般选用第一种，java不支持继承多类。但是可以实现多个接口。要把extends宝贵的位置留出来。<br>另外值得注意的一点。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyThread t1  = new MyThread();</span><br><span class="line">t1.run();//没有用到多线程，相当于直接调用了一个方法</span><br><span class="line">t1.start();//正确的调用方式</span><br></pre></td></tr></table></figure></p>
+<p>2、后台线程<br>我个人的理解中，后台线程属于重要程度比较低的线程。一般的作用是支持前台线程。从而，在前台线程全部结束后，后台线程也会被强行结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">t1.setDaemon(true);//设置此线程为后台线程的方法。</span><br></pre></td></tr></table></figure><br>后台线程值得注意的有两点，1、在一般情况下卸载finally关键字后面的代码肯定是会运行的。但是后台线程比较特殊，在系统前台线程全部死亡后，写在后台线程finally后的代码就不会运行。2、由后台线程生成的新的线程，也都是后台。</p>
+<h2 id="java-thread-锁"><a href="#java-thread-锁" class="headerlink" title="java thread 锁"></a>java thread 锁</h2><p>众所周知，多线程最麻烦问题之一就是同步问题。java语言也设计了一些方便帮我们解决这些问题。<br>1、原子操作<br>根据《java编程思想》一书的建议，自己最好不要依赖于原子操作，因为一般的程序员没有那么好的掌控力。但是了解一下一般的原子操作对我们理解程序还是很有帮助的。<br>    1、对于处理除long，double类型之外的基本变量都是原子性的。（因为long、double在加载时是分别度两次32位）<br>2、在java中，自增操作不是设计出原子性的<br>3、java中封装了一些原子类，如AtomicInteger、AtomicLong等，用法也很简单。</p>
+<p>2、synchronized 和volatile Lock.class<br>volatile:是一个轻量级锁，修饰变量时，相当于说明，被修改是，会刷新缓存。保障别的线程读到这个变量时是最新修改的<br>synchronized<br>最常用的锁，通常形式是<br>synchronized function {<br>    //代码<br>}<br>在一个对象中，维持着一个锁变量。当线程进入这个，此线程相当于获得了这个锁的使用权。其他线程在没有获得锁之前，禁止进入此代码段。同时，他还维持着一个变量，函数调用栈进入不同的加synchronized的方法，变量会增加，退出会减少，直至0才会释放锁<br>synchronized(this){<br>    //代码<br>}<br>可以锁定代码块</p>
+<p>Lock.class<br>这个是一个显示锁，在代码上来看，不够优雅。达到的效果和synchronized差不多。但是可以在获得锁失败时做出处理。</p>
 
       
     </div>
@@ -313,8 +279,62 @@
     
 
 
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/26/generics/">
+                    generics
+                </a>
+            </div>
+        
+    </nav>
+
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#并发编程"><span class="toc-number">1.</span> <span class="toc-text">并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-中的并发"><span class="toc-number">2.</span> <span class="toc-text">java 中的并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-thread-锁"><span class="toc-number">3.</span> <span class="toc-text">java thread 锁</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
 
 
 
@@ -332,7 +352,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"about　| liangSJ　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"concurrency　| liangSJ　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -347,6 +367,24 @@
 
     
 
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/26/generics/" title="下一篇: generics">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/concurrency/">concurrency</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/generics/">generics</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/RIIT/">我所理解的java反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/19/我对java-String的理解/">String</a></li></ul>
 
 
 

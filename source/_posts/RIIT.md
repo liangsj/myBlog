@@ -9,7 +9,7 @@ tags: java reflection
 
 ## Class
 
-一切都是对象,是java的基本设计思想。在我们编写每一个.java文件后，编译器会将我们的.java文件编译成.class文件。当我们调用name.class的静态方法时，jvm的类加载器会将我们的class文件加载进内存。这个从侧面证实了，一个类的构造函数也是静态函数，虽然他们有static关键字。class也是一个对象。我们可以利用这个对象。来创建“常规”的对象.从上面的描述，我们也可以了解到，java是动态加载的语言。当类首次被引用的时候，才会被加载进内存。这点c++中就很难做到。
+一切都是对象,是java的基本设计思想。在我们编写每一个.java文件后，编译器会将我们的.java文件编译成.class文件。当我们调用name.class的静态方法时，jvm的类加载器会将我们的class文件加载进内存。这个从侧面证实了，一个类的构造函数也是静态函数，虽然他们没有static关键字。class也是一个对象。我们可以利用这个对象。来创建“常规”的对象.从上面的描述，我们也可以了解到，java是动态加载的语言。当类首次被引用的时候，才会被加载进内存。这点c++中就很难做到。
 
 {%codeblock%}
 1、Class.forname(className);  //可以不是使用对象，拿到这个类的Class引用。
@@ -33,7 +33,7 @@ isInstanceOf和isInstance这两个方法都是用来确定对象的类型。
 {%codeblock%}
 A a = new A();
 a.instanceOf A; //true
-a.getClass().instanceOf(A);//true
+a.getClass().instance(A);//true
 {%endcodeblock%}
 值得注意的是，isInstance比较影响效率，在能使用isInstanceOf 的情况下，尽可能的使用isInstanceOf
 ## 动态代理
