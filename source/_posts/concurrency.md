@@ -83,3 +83,18 @@ CountDownLatch
 CyclicBarrier
 和CountDownLatch相似，这个也是管理多个线程工作的拦截器。用法更更加灵活。设想一个场景。一个很庞大的矩阵，我们对所有元素进行求和计算。我们的想法是，每一列用一个线程进行计算，在把所有的结果加起来。那么，在我们进行完每一列计算后，调用await()等待,其他的线程执行完计算才能执行加操作。在new CycliBarrier的生成方法中，能传入一个参数Runnable,复写它的run方法，当所有调用和barrier有关的线程进入await（）。执行这个Runnable。（这个Runnable在最后进入的线程中执行）
 
+Semaphore
+正常的锁，我们可以理解它是一个许可证。当一个线程调用他的acquire()方法时，他将获得许可证。当调用realse()方法后，许可证才被释放。android的wakeLock就是这样实现的。
+
+Exchanger
+从名字可以看出是用来进行线程之间的交换的。在两个线程在结束之前，都会获得由exchanger.exchange(Object)返回的对象。
+{% img /images/w.png%}
+
+乐观锁
+在原子操作的数据类型中，如AtomicInteger中，可以利用compareAndSet方法，修改其中的数据。以提高效率。乐观锁实现的原理是：判断是数据是不是最新的。如果是最新的就可以操作，而如果不是就循环判断，直到数据是最新的。这样可以省去加锁和解锁消耗的时间。
+
+
+## android中的线程解决方案
+在android开发中，我们一般通过Handler - Looper - MessageQueue来进行进程中的通信和同步，
+包括android FrameWork在进入ActivityThread时也会生成一个 Handler H 来负责管理剩下所有的操作。我觉得android设计的同步实行，更适合我们普通人的思维。
+具体是这样的。每个一个Thread都可以绑定一个MessageQueue，用于存放消息。当其里面不为空，loop将其取出，让后执行其回调。而hanler是发射器。用来将Message发射到其绑定的MessageQueue中。这样当，当线程1执行完操作，就可以将结果发射给线程2.线程2得到接着操作资源，接着执行操作。我个人觉得是一种比较优雅和符合普通人思维的方式。

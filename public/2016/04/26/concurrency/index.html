@@ -11,10 +11,12 @@
 <meta property="og:url" content="http://yoursite.com/2016/04/26/concurrency/index.html">
 <meta property="og:site_name" content="liangSJ">
 <meta property="og:description" content="并发编程   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度">
-<meta property="og:updated_time" content="2016-05-10T08:11:55.933Z">
+<meta property="og:image" content="http://yoursite.com/images/w.png">
+<meta property="og:updated_time" content="2016-05-10T09:56:35.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="concurrency">
 <meta name="twitter:description" content="并发编程   并发编程属于编程技术里面较难掌握的一部分。就我个人而言，日常编写代码中。出现莫名奇妙且很难调试复现出来的bug一样都出现在这一块。由于jvm线程调度有随意性。sun公司也没有将此部分代码公开。我们很难了解里面的具体实现。只能说，在遇上对线程或者多进程编程的需求时，要保持谨慎的态度。一般你觉得这部分会出错，那就会出错。  从操作系统的角度来说，进程是资源分配的最小单位，线程则是系统调度">
+<meta name="twitter:image" content="http://yoursite.com/images/w.png">
   
     <link rel="alternative" href="/atom.xml" title="liangSJ" type="application/atom+xml">
   
@@ -277,6 +279,10 @@
 <h2 id="新类库中的构件"><a href="#新类库中的构件" class="headerlink" title="新类库中的构件"></a>新类库中的构件</h2><p>我想想很多用java的程序员最喜欢的就是其中各种各样的框架，能大大减少开发时间。说句题外话，我们这一批刚刚从学校走出来的学生。在学校常常学习着大量的计算机底层知识，用着c实现各种算法。很多人，包括曾经的我。都觉得用太多成型的框架，会大大减弱编程能力。但是我现在觉得，能用好用的工具，很好的解决问题，才是最重要的。包括现在流行的python，越来越多的细节被隐藏在各种组件中，大大减轻了程序员的压力。<br>   java SE5 中的java.util.concurrent 引入了很多解决并发问题的工具。以下是我看<think in="" java="">中的总结。</think></p>
 <p>CountDownLatch<br>它被用来同步一个或者多个任务，强制他们等待有其他任务执行的一组操作。<br>它相当与一个计数器，在调用await()后，他将进入等待状态。直至countDown()能将初始化量减少到0;。</p>
 <p>CyclicBarrier<br>和CountDownLatch相似，这个也是管理多个线程工作的拦截器。用法更更加灵活。设想一个场景。一个很庞大的矩阵，我们对所有元素进行求和计算。我们的想法是，每一列用一个线程进行计算，在把所有的结果加起来。那么，在我们进行完每一列计算后，调用await()等待,其他的线程执行完计算才能执行加操作。在new CycliBarrier的生成方法中，能传入一个参数Runnable,复写它的run方法，当所有调用和barrier有关的线程进入await（）。执行这个Runnable。（这个Runnable在最后进入的线程中执行）</p>
+<p>Semaphore<br>正常的锁，我们可以理解它是一个许可证。当一个线程调用他的acquire()方法时，他将获得许可证。当调用realse()方法后，许可证才被释放。android的wakeLock就是这样实现的。</p>
+<p>Exchanger<br>从名字可以看出是用来进行线程之间的交换的。在两个线程在结束之前，都会获得由exchanger.exchange(Object)返回的对象。<br><img src="/images/w.png"></p>
+<p>乐观锁<br>在原子操作的数据类型中，如AtomicInteger中，可以利用compareAndSet方法，修改其中的数据。以提高效率。乐观锁实现的原理是：判断是数据是不是最新的。如果是最新的就可以操作，而如果不是就循环判断，直到数据是最新的。这样可以省去加锁和解锁消耗的时间。</p>
+<h2 id="android中的线程解决方案"><a href="#android中的线程解决方案" class="headerlink" title="android中的线程解决方案"></a>android中的线程解决方案</h2><p>在android开发中，我们一般通过Handler - Looper - MessageQueue来进行进程中的通信和同步，<br>包括android FrameWork在进入ActivityThread时也会生成一个 Handler H 来负责管理剩下所有的操作。我觉得android设计的同步实行，更适合我们普通人的思维。<br>具体是这样的。每个一个Thread都可以绑定一个MessageQueue，用于存放消息。当其里面不为空，loop将其取出，让后执行其回调。而hanler是发射器。用来将Message发射到其绑定的MessageQueue中。这样当，当线程1执行完操作，就可以将结果发射给线程2.线程2得到接着操作资源，接着执行操作。我个人觉得是一种比较优雅和符合普通人思维的方式。</p>
 
       
     </div>
@@ -302,7 +308,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#并发编程"><span class="toc-number">1.</span> <span class="toc-text">并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-中的并发"><span class="toc-number">2.</span> <span class="toc-text">java 中的并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-thread-锁"><span class="toc-number">3.</span> <span class="toc-text">java thread 锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程中的异常"><span class="toc-number">4.</span> <span class="toc-text">线程中的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新类库中的构件"><span class="toc-number">5.</span> <span class="toc-text">新类库中的构件</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#并发编程"><span class="toc-number">1.</span> <span class="toc-text">并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-中的并发"><span class="toc-number">2.</span> <span class="toc-text">java 中的并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java-thread-锁"><span class="toc-number">3.</span> <span class="toc-text">java thread 锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程中的异常"><span class="toc-number">4.</span> <span class="toc-text">线程中的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新类库中的构件"><span class="toc-number">5.</span> <span class="toc-text">新类库中的构件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#android中的线程解决方案"><span class="toc-number">6.</span> <span class="toc-text">android中的线程解决方案</span></a></li></ol>
 </div>
 <style>
     .left-col .switch-btn {
