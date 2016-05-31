@@ -158,7 +158,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-struct/">data struct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
                     </div>
                 </section>
                 
@@ -231,6 +231,73 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/31/tree/" class="article-date">
+      <time datetime="2016-05-31T05:44:28.000Z" itemprop="datePublished">2016-05-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/31/tree/">tree</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　好久没有更新我的博客了，最近快开始校招了。因为长期在外面做开发，加上离考研已经很久了。数据结构的知识都已经记得模模糊糊了。为了准备笔试，同时提高自己的计算机素养。自己试着回忆了一下，树结构的基本算法。</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>　　二叉树存储解构是一个数据两个指针。换到java中，就是一个变量，两个引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static class Node&#123;</span><br><span class="line">		public Node left;</span><br><span class="line">		public Node right;</span><br><span class="line">		public int val;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="二叉树的建立"><a href="#二叉树的建立" class="headerlink" title="二叉树的建立"></a>二叉树的建立</h2><p>　二叉树能顺序存储，也能链式存储。但是链式存储更能直观的表现出二叉树的特征。下面这个算法是由顺序存储结构生成链式存储结构。我把没有数据的结点在数组中用”-1”表示（貌似很多教材都用’＃’表示）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public  Node buildTree(int[] nums,int i) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		if(i &gt; nums.length -1)&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		if(nums[i]== -1 )&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		Node n  = new Node();</span><br><span class="line">		n.val = nums[i];</span><br><span class="line">		n.left = buildTree(nums, 2*i);</span><br><span class="line">		n.right = buildTree(nums, 2*i+1);</span><br><span class="line">		return n;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>　　　二叉树的遍历是考试中最经常考的内容，他的递归遍历代码优雅，简洁。有一种让人过目不忘的感觉。这里就不给出了，但是值得注意的是，一个结点被无论是哪种遍历，在递归的时候，它已经被被经过了三次。上面上一张考研材料上的图，<br><img src="/images/tree.png"></p>
+<p>标注为１的，是前序遍历<br>标注为2的，是中序遍历<br>标注为3的，是后序遍历</p>
+<p>还有一点头脑风暴的感觉，就是用栈来实现递归，其实思想也不难，就是有点绕。<br>总体都是，按照上述路线入栈，前中序当他是最后叶子结点时候，出栈。后序遍历是经过第二次时候才出栈。(原谅我令人可怜的语文水平吧)<br>下面是我写的非递归前序遍历。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void preorder2(Node root)&#123;</span><br><span class="line">	Stack&lt;Node&gt; s = new Stack&lt;Node&gt;();</span><br><span class="line">       </span><br><span class="line">	while(root !=null || !s.isEmpty())&#123;</span><br><span class="line">		while(root!= null)&#123;</span><br><span class="line">			s.push(root);</span><br><span class="line">			System.out.print(root.val + &quot;---&gt;&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		if(!s.isEmpty() &amp;&amp; root == null)&#123;</span><br><span class="line">			root=s.pop();</span><br><span class="line">			root=root.right;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>层次遍历就更简单了，利用队列实现，当队列不为空，出列，读取他的数据，并将他的左右孩子入队列。有趣的是，层次遍历正好是数的线性存储。默认数组位置　０　不存放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void queueOrder(Node root)&#123;</span><br><span class="line">	List&lt;Node&gt; l = new ArrayList&lt;Node&gt;();</span><br><span class="line">	l.add(root);</span><br><span class="line">	</span><br><span class="line">	while(l.size() != 0)&#123;</span><br><span class="line">		Node n=l.remove(0);</span><br><span class="line">		System.out.print(&quot;  &quot; + n.val);</span><br><span class="line">		if(n.left != null) l.add(n.left);</span><br><span class="line">		if(n.right != null) l.add(n.right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>树是非常有用的数据结构，包括平衡二叉树，二叉查询树，哈夫曼编码都是树有意思的应用。我还没有总结成代码。但是，这些东西挺有趣，包括java中很多容器都利用到树的知识。比如TreeMap ，就是红黑树。</p>
+<h2 id="练习代码-拿出来献丑了"><a href="#练习代码-拿出来献丑了" class="headerlink" title="练习代码　拿出来献丑了"></a>练习代码　拿出来献丑了</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package com.may.eighteen;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.Stack;</span><br><span class="line"></span><br><span class="line">public class Solution &#123;</span><br><span class="line"></span><br><span class="line">	public static class Node&#123;</span><br><span class="line">		public Node left;</span><br><span class="line">		public Node right;</span><br><span class="line">		public int val;</span><br><span class="line">	&#125;</span><br><span class="line">	static int[] nums = &#123;-1,1,2,3,4,5,6,7,8,9&#125;;</span><br><span class="line">	public static void main(String args[])&#123;</span><br><span class="line">		Solution s = new Solution();</span><br><span class="line">		Node root = s.buildTree(nums,1);</span><br><span class="line">		System.out.print(&quot;-----hello----&quot;);</span><br><span class="line">		s.preorder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		s.preorder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		s.queueOrder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		System.out.print(s.findNodeCount(root));</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public  Node buildTree(int[] nums,int i) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		if(i &gt; nums.length -1)&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		if(nums[i]== -1 )&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		Node n  = new Node();</span><br><span class="line">		n.val = nums[i];</span><br><span class="line">		n.left = buildTree(nums, 2*i);</span><br><span class="line">		n.right = buildTree(nums, 2*i+1);</span><br><span class="line">		return n;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	public void buileTree(int[] preOrder, int[] inOrder, Node root)&#123;</span><br><span class="line">		if(root == null) return;</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	void queueOrder(Node root)&#123;</span><br><span class="line">		List&lt;Node&gt; l = new ArrayList&lt;Node&gt;();</span><br><span class="line">		l.add(root);</span><br><span class="line">		</span><br><span class="line">		while(l.size() != 0)&#123;</span><br><span class="line">			Node n=l.remove(0);</span><br><span class="line">			System.out.print(&quot;  &quot; + n.val);</span><br><span class="line">			if(n.left != null) l.add(n.left);</span><br><span class="line">			if(n.right != null) l.add(n.right);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	void preorder(Node root)&#123;</span><br><span class="line">		if(root == null) return;</span><br><span class="line">		System.out.print(root.val + &quot;---&quot;);</span><br><span class="line">		preorder(root.left);</span><br><span class="line">		preorder(root.right);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	void preorder2(Node root)&#123;</span><br><span class="line">		Stack&lt;Node&gt; s = new Stack&lt;Node&gt;();</span><br><span class="line">        </span><br><span class="line">		while(root !=null || !s.isEmpty())&#123;</span><br><span class="line">			while(root!= null)&#123;</span><br><span class="line">				s.push(root);</span><br><span class="line">				System.out.print(root.val + &quot;---&gt;&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">			if(!s.isEmpty() &amp;&amp; root == null)&#123;</span><br><span class="line">				root=s.pop();</span><br><span class="line">				root=root.right;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">   int findNodeCount(Node root)&#123;</span><br><span class="line">		if(root == null)&#123;return 0;&#125;</span><br><span class="line">		return findNodeCount(root.left) + findNodeCount(root.right) +1;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-struct/">data struct</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-concurrency" class="article article-type-post" itemscope itemprop="blogPost">
   

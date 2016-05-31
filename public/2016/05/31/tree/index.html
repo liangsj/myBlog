@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>tree | liangSJ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言　　好久没有更新我的博客了，最近快开始校招了。因为长期在外面做开发，加上离考研已经很久了。数据结构的知识都已经记得模模糊糊了。为了准备笔试，同时提高自己的计算机素养。自己试着回忆了一下，树结构的基本算法。
+数据结构　　二叉树存储解构是一个数据两个指针。换到java中，就是一个变量，两个引用
+123456public static class Node&amp;#123;		public Node le">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tree">
+<meta property="og:url" content="http://yoursite.com/2016/05/31/tree/index.html">
+<meta property="og:site_name" content="liangSJ">
+<meta property="og:description" content="前言　　好久没有更新我的博客了，最近快开始校招了。因为长期在外面做开发，加上离考研已经很久了。数据结构的知识都已经记得模模糊糊了。为了准备笔试，同时提高自己的计算机素养。自己试着回忆了一下，树结构的基本算法。
+数据结构　　二叉树存储解构是一个数据两个指针。换到java中，就是一个变量，两个引用
+123456public static class Node&amp;#123;		public Node le">
+<meta property="og:image" content="http://yoursite.com/images/tree.png">
+<meta property="og:updated_time" content="2016-05-31T06:22:07.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tree">
+<meta name="twitter:description" content="前言　　好久没有更新我的博客了，最近快开始校招了。因为长期在外面做开发，加上离考研已经很久了。数据结构的知识都已经记得模模糊糊了。为了准备笔试，同时提高自己的计算机素养。自己试着回忆了一下，树结构的基本算法。
+数据结构　　二叉树存储解构是一个数据两个指针。换到java中，就是一个变量，两个引用
+123456public static class Node&amp;#123;		public Node le">
+<meta name="twitter:image" content="http://yoursite.com/images/tree.png">
+  
+    <link rel="alternative" href="/atom.xml" title="liangSJ" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
+  
+  
+  
+      <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+      <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.9/clipboard.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+          fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+          scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.0.9/scrollreveal.min.js"
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">liangSJ</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:lljs123@163.com" title="Email"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="#" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-struct/">data struct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-reflection/">java reflection</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">计算机科学爱好者</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">liangSJ</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">liangSJ</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:lljs123@163.com" title="Email"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="#" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/31/tree/" class="article-date">
+      <time datetime="2016-05-31T05:44:28.000Z" itemprop="datePublished">2016-05-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tree
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-struct/">data struct</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　好久没有更新我的博客了，最近快开始校招了。因为长期在外面做开发，加上离考研已经很久了。数据结构的知识都已经记得模模糊糊了。为了准备笔试，同时提高自己的计算机素养。自己试着回忆了一下，树结构的基本算法。</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>　　二叉树存储解构是一个数据两个指针。换到java中，就是一个变量，两个引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static class Node&#123;</span><br><span class="line">		public Node left;</span><br><span class="line">		public Node right;</span><br><span class="line">		public int val;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="二叉树的建立"><a href="#二叉树的建立" class="headerlink" title="二叉树的建立"></a>二叉树的建立</h2><p>　二叉树能顺序存储，也能链式存储。但是链式存储更能直观的表现出二叉树的特征。下面这个算法是由顺序存储结构生成链式存储结构。我把没有数据的结点在数组中用”-1”表示（貌似很多教材都用’＃’表示）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public  Node buildTree(int[] nums,int i) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		if(i &gt; nums.length -1)&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		if(nums[i]== -1 )&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		Node n  = new Node();</span><br><span class="line">		n.val = nums[i];</span><br><span class="line">		n.left = buildTree(nums, 2*i);</span><br><span class="line">		n.right = buildTree(nums, 2*i+1);</span><br><span class="line">		return n;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>　　　二叉树的遍历是考试中最经常考的内容，他的递归遍历代码优雅，简洁。有一种让人过目不忘的感觉。这里就不给出了，但是值得注意的是，一个结点被无论是哪种遍历，在递归的时候，它已经被被经过了三次。上面上一张考研材料上的图，<br><img src="/images/tree.png"></p>
+<p>标注为１的，是前序遍历<br>标注为2的，是中序遍历<br>标注为3的，是后序遍历</p>
+<p>还有一点头脑风暴的感觉，就是用栈来实现递归，其实思想也不难，就是有点绕。<br>总体都是，按照上述路线入栈，前中序当他是最后叶子结点时候，出栈。后序遍历是经过第二次时候才出栈。(原谅我令人可怜的语文水平吧)<br>下面是我写的非递归前序遍历。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void preorder2(Node root)&#123;</span><br><span class="line">	Stack&lt;Node&gt; s = new Stack&lt;Node&gt;();</span><br><span class="line">       </span><br><span class="line">	while(root !=null || !s.isEmpty())&#123;</span><br><span class="line">		while(root!= null)&#123;</span><br><span class="line">			s.push(root);</span><br><span class="line">			System.out.print(root.val + &quot;---&gt;&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		if(!s.isEmpty() &amp;&amp; root == null)&#123;</span><br><span class="line">			root=s.pop();</span><br><span class="line">			root=root.right;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>层次遍历就更简单了，利用队列实现，当队列不为空，出列，读取他的数据，并将他的左右孩子入队列。有趣的是，层次遍历正好是数的线性存储。默认数组位置　０　不存放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void queueOrder(Node root)&#123;</span><br><span class="line">	List&lt;Node&gt; l = new ArrayList&lt;Node&gt;();</span><br><span class="line">	l.add(root);</span><br><span class="line">	</span><br><span class="line">	while(l.size() != 0)&#123;</span><br><span class="line">		Node n=l.remove(0);</span><br><span class="line">		System.out.print(&quot;  &quot; + n.val);</span><br><span class="line">		if(n.left != null) l.add(n.left);</span><br><span class="line">		if(n.right != null) l.add(n.right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>树是非常有用的数据结构，包括平衡二叉树，二叉查询树，哈夫曼编码都是树有意思的应用。我还没有总结成代码。但是，这些东西挺有趣，包括java中很多容器都利用到树的知识。比如TreeMap ，就是红黑树。</p>
+<h2 id="练习代码-拿出来献丑了"><a href="#练习代码-拿出来献丑了" class="headerlink" title="练习代码　拿出来献丑了"></a>练习代码　拿出来献丑了</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package com.may.eighteen;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.Stack;</span><br><span class="line"></span><br><span class="line">public class Solution &#123;</span><br><span class="line"></span><br><span class="line">	public static class Node&#123;</span><br><span class="line">		public Node left;</span><br><span class="line">		public Node right;</span><br><span class="line">		public int val;</span><br><span class="line">	&#125;</span><br><span class="line">	static int[] nums = &#123;-1,1,2,3,4,5,6,7,8,9&#125;;</span><br><span class="line">	public static void main(String args[])&#123;</span><br><span class="line">		Solution s = new Solution();</span><br><span class="line">		Node root = s.buildTree(nums,1);</span><br><span class="line">		System.out.print(&quot;-----hello----&quot;);</span><br><span class="line">		s.preorder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		s.preorder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		s.queueOrder(root);</span><br><span class="line">		System.out.println(&quot;&quot;);</span><br><span class="line">		System.out.print(s.findNodeCount(root));</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public  Node buildTree(int[] nums,int i) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		if(i &gt; nums.length -1)&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		if(nums[i]== -1 )&#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		Node n  = new Node();</span><br><span class="line">		n.val = nums[i];</span><br><span class="line">		n.left = buildTree(nums, 2*i);</span><br><span class="line">		n.right = buildTree(nums, 2*i+1);</span><br><span class="line">		return n;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	public void buileTree(int[] preOrder, int[] inOrder, Node root)&#123;</span><br><span class="line">		if(root == null) return;</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	void queueOrder(Node root)&#123;</span><br><span class="line">		List&lt;Node&gt; l = new ArrayList&lt;Node&gt;();</span><br><span class="line">		l.add(root);</span><br><span class="line">		</span><br><span class="line">		while(l.size() != 0)&#123;</span><br><span class="line">			Node n=l.remove(0);</span><br><span class="line">			System.out.print(&quot;  &quot; + n.val);</span><br><span class="line">			if(n.left != null) l.add(n.left);</span><br><span class="line">			if(n.right != null) l.add(n.right);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	void preorder(Node root)&#123;</span><br><span class="line">		if(root == null) return;</span><br><span class="line">		System.out.print(root.val + &quot;---&quot;);</span><br><span class="line">		preorder(root.left);</span><br><span class="line">		preorder(root.right);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	void preorder2(Node root)&#123;</span><br><span class="line">		Stack&lt;Node&gt; s = new Stack&lt;Node&gt;();</span><br><span class="line">        </span><br><span class="line">		while(root !=null || !s.isEmpty())&#123;</span><br><span class="line">			while(root!= null)&#123;</span><br><span class="line">				s.push(root);</span><br><span class="line">				System.out.print(root.val + &quot;---&gt;&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">			if(!s.isEmpty() &amp;&amp; root == null)&#123;</span><br><span class="line">				root=s.pop();</span><br><span class="line">				root=root.right;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">   int findNodeCount(Node root)&#123;</span><br><span class="line">		if(root == null)&#123;return 0;&#125;</span><br><span class="line">		return findNodeCount(root.left) + findNodeCount(root.right) +1;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/26/concurrency/">
+                    concurrency
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据结构"><span class="toc-number">2.</span> <span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树的建立"><span class="toc-number">3.</span> <span class="toc-text">二叉树的建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树的遍历"><span class="toc-number">4.</span> <span class="toc-text">二叉树的遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">5.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#练习代码-拿出来献丑了"><span class="toc-number">6.</span> <span class="toc-text">练习代码　拿出来献丑了</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <li id="bds_twi"><a href="#" class="bds_twi" data-cmd="twi" title="分享到推特"></a></li>
+            <li id="bds_tsina"><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a></li>
+            <li id="bds_sqq"><a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a></li>
+            <li id="bds_copy"><a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a></li>
+            <li id="bds_mail"><a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a></li>
+            <li id="bds_weixin"><a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a></li>
+            <li id="bds_more"><a href="#" class="bds_more" data-cmd="more"></i></a></li>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"tree　| liangSJ　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/26/concurrency/" title="下一篇: concurrency">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/05/31/tree/">tree</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/concurrency/">concurrency</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/generics/">generics</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/RIIT/">我所理解的java反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/19/我对java-String的理解/">String</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 liangSJ
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
