@@ -37,7 +37,7 @@ root_url:
 subnav:
   Email: "mailto:lljs123@163.com"
   #新浪微博: "sina weibo"
-  GitHub: "#"
+  GitHub: "https://github.com/liangsj"
   #V2EX: "#"
   RSS: "/atom.xml"
   #知乎: "zhihu"
