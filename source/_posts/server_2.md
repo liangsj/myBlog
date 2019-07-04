@@ -332,7 +332,7 @@ func (s *Sentinel) GetRedisConn() (redis.Conn, error) {
 此时的架构为：
 {% img /images/2_webapp_struct_3.png %}
 ## 总结
-第二章相比起第二章来说，总体的业务功能并没有变化。但是其架构比起之前变得更加复杂，稳定性也得到了较好的保证。
+第二章相比起第一章来说，总体的业务功能并没有变化。但是其架构比起之前变得更加复杂，稳定性也得到了较好的保证。
 至此，我们项目的变化过程为:
 {%img /images/2_webapp_struct_4.png%}
 
