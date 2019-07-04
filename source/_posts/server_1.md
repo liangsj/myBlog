@@ -2,7 +2,7 @@
 title: 服务的搭建及其演变 -简单的单点服务搭建
 date: 2019-06-28 00:00:00
 categories:
-       - program
+       - 编程
 tags:
      - webapp
      - docker 
