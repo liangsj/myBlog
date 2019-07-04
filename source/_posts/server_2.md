@@ -176,7 +176,7 @@ func getPrasieCount(w http.ResponseWriter, req *http.Request) {
 从上述代码中，可以看到，在读取点赞数时，先读缓存，如果缓存有数据我们直接当做结果进行返回。如果结果中没有数据，在进行数据库查询，并将查询结果放回redis-cache中。当有足够的高的缓存命中率时，能很好减少到下游db的流量，从而达到保护db的目的<br>
 在写点赞数时，会把redis cache的数据进行删除，从而保证下次直读db，保证数据的一致性。***存在缓存设计的风险点，当缓存删除失败时，会造成缓存数据和db数据不一致，对于要求数据强一致的业务不能这么进行设计***
 此时架构为：
-{% img /image/2_webapp_struct_1.png %}
+{% img /images/2_webapp_struct_1.png %}
 在原来的基础上多了一层缓存
 ## 主从结构的分流设计 - 基于docker带有主从结构的redis 搭建
 至此，保护db的目的已经达到了。假设缓存流量持续上涨，缓存命中率也较高的情况下。redis-cache会成为新的瓶颈，除了在redis -cache 上在加一层在服务器上的local-cache外。我们还有第二个解决方案 ，进行主从结构的部署,（这里提供redis的解决方案，db也可以参考这种方案）。 redis 本身就支持主从结构的部署，只需要简单的命令 `redis-server --slaveof <$redis_master_host> <$redis_master_port>` 即可<br>
@@ -223,7 +223,7 @@ func getFromCache(resourceID int64) (int64, error) {
 ```
 最后，写缓存流量在redis_master 主库上，读流量在从库上（从库如果有写操作会进行保存），大大减少redis master主库上的流量，从而达到分流的目的
 此时的架构为：
-{% img /image/2_webapp_struct_2.png %}
+{% img /images/2_webapp_struct_2.png %}
 redis部署呈现主从结构
 ## 自动主从切换 - 基于docker的sentinel 环境搭建
 通过以上两个设计，系统稳定性已经上升了一个档次。但，我们观察到，主库现在又面临着单点的问题。如果主库出现可用性问题，结果往往是灾难的。我们需要套机制来进行监控主库和稳定性和当出现问题时，能进行主从切换,我们依旧以redis为例
@@ -273,13 +273,13 @@ docker-compose up -d
 docker container ls -a 
 ```
 重新部署和查看，我们看到两个sentinel 服务已经启动
-{%img /image/2_compose_ret3 %}
+{%img /images/2_compose_ret3.png %}
 在改写代码之前，我们手动测试下。
 1. `docker logs -f sentinel_1` 查看sentienl_1 容器中标准输出流的日志,看到redis主库的状态和地址<br>
 2.  `docker pause redis_master` 手动暂停一个容器，来模拟线上出现问题，sentinel进行的操作,可以看到，sentinel对我们的主库进行了切换。
-{%img /image/2_sentinel_log_1.png %}
+{%img /images/2_sentinel_log_1.png %}
 步骤1 结果
-{%img /image/2_sentinel_log_2.png %}
+{%img /images/2_sentinel_log_2.png %}
 步骤2 结果
 ### 代码改写
 在点赞项目中应用<br>
@@ -330,11 +330,11 @@ func (s *Sentinel) GetRedisConn() (redis.Conn, error) {
 }
 ```
 此时的架构为：
-{% img /image/2_webapp_struct_3.png %}
+{% img /images/2_webapp_struct_3.png %}
 ## 总结
 第二章相比起第二章来说，总体的业务功能并没有变化。但是其架构比起之前变得更加复杂，稳定性也得到了较好的保证。
 至此，我们项目的变化过程为:
-{%img /image/2_webapp_struct_4.png %}
+{%img /images/2_webapp_struct_4.png%}
 
 ## 生产环境中的注意点
 - 本章主要用redis来阐述如果通过改变整体架构来面对大流量场景，其实 mysql的也有类似的操作，在实际应用中常常是先解决mysql的单点问题。
