@@ -1,7 +1,11 @@
 ---
 title: 服务的搭建及其演变 - 高可用分布式缓存系统构建
 date: 2019-06-28 00:00:00
-tags: webapp docker-compose redis sentinel
+tags: 
+    - webapp
+    - docker-compose 
+    - redis 
+    - sentinel
 ---
 # 前言
 在前一节中，已经实现了最简单的单点模式webapp 搭建。这种架构往往很难抗住高qps（每秒访问次数）的冲击。在业务发展，往往要进行改造。一套抗高访问量的系统往往是很复杂的，每一个组件都有其优化的点。在众多的环境中，数据库往往是最薄弱的一环. 

@@ -1,7 +1,13 @@
 ---
 title: 服务的搭建及其演变 -简单的单点服务搭建
 date: 2019-06-28 00:00:00
-tags: webapp docker mysql golang
+categories:
+       - program
+tags:
+     - webapp
+     - docker 
+     - mysql 
+     - golang
 ---
 
 # 服务的搭建及其演变 -简单的单点服务搭建
@@ -101,7 +107,7 @@ CREATE TABLE `praise_count` (
 2. 数据库的账号给予权限过高，密码过于简单，存在安全风险。
 
 
-### app 代码的编写
+## app 代码的编写
 这里的app相对比较简单，只实现两个接口。
 ```
 ` /praise/set?resource_id={int}`
