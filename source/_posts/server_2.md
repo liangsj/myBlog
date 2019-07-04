@@ -1,6 +1,6 @@
 ---
-title: 服务的搭建及其演变 - 高可用分布式缓存系统构建
-date: 2019-06-28 00:00:00
+title: 服务的搭建及其演变(2) - 高可用分布式缓存系统构建
+date: 2019-07-06 00:00:00
 categories:
  - 编程
 tags: 
@@ -12,8 +12,8 @@ tags:
 # 前言
 在前一节中，已经实现了最简单的单点模式webapp 搭建。这种架构很难抗住高qps（每秒访问次数）的冲击。随着业务发展，需要进行改造。一套抗高访问量的系统是很复杂的，每一个组件都有其优化的点。在众多的环境中，数据库往往是最薄弱的一环. 
 对于数据库优化，目前有几种
-- 数据库上流进行缓存。将热数据存入内存数据库中，如常见的nosql数据库 redis、memcache；或者添加到webapp 的localcache中。这种方式优点是: 部署简单；执行简单。缺点是 入侵代码，增加代码复杂度；缓存数据存在不一致的风险；缓存命中率如果无法保证的话，也达不到保证下游安全的目的。
-- mysql 进行主从部署，一般来说主库只负责写操作，并将数据库内容同步更新到从库中。从库负责读操作。优点时：对代码入侵程度小；当某个库不可用时，我们可以进行切换。缺点是：在大规模的写操作时，可能会带来主从数据的延迟；主库压力大。
+- 数据库上流进行缓存。将热数据存入内存数据库中，如常见的nosql数据库 redis、memcache；或者添加到webapp 的localcache中。这种方式优点是: 部署简单；执行简单。缺点是 入侵代码;增加代码复杂度；缓存数据存在不一致的风险；缓存命中率如果无法保证的话，也达不到保证下游安全的目的。
+- mysql 进行主从部署，一般来说主库只负责写操作，并将数据库内容同步更新到从库中。从库负责读操作。优点是：对代码入侵程度小；当某个库不可用时，可以进行切换。缺点是：在大规模的写操作时，可能会带来主从数据的延迟；主库压力大。
 - 进行拆库拆表。 mysql 主从部署解决不了当数据急剧增加上，查询、插入过慢的问题。这时候一般我们会进行拆库拆表，这是一个痛苦的过程。其对业务代码入侵非常大。
 上述几个方法，可能会同时存在。在这里介绍下，最常见的添加缓存的方案。并进行扩展，描述 redis 怎么进行主从部署以及自动进行主从切换（mysql 主从部署的大体也是这么一个流程，就不重复介绍了）。
 
@@ -43,8 +43,12 @@ services:   # 要定义的服务信息，这里除了需要添加之前的webapp
             - ./sh:/sh
         command: sh /sh/start.sh       # 容器创建后要运行的命令
 ```
-上面这段配置相当于 上节的 `docker run -d -p  8080:80 -v $HOME/src/go/webapp:/go/src/webapp -v $HOME/src/sh:/sh --network front golang sh /sh/start.sh`
-```yml     
+上面这段配置相当于 上节的 
+```shell
+docker run -d -p  8080:80 -v $HOME/src/go/webapp:/go/src/webapp -v $HOME/src/sh:/sh --network front golang sh /sh/start.sh`
+```
+接下来配置docker-compose.yml部分
+```yml   
    mysql:
         image: mysql
         container_name: mysql
@@ -171,6 +175,9 @@ func getPrasieCount(w http.ResponseWriter, req *http.Request) {
 ```
 从上述代码中，可以看到，在读取点赞数时，先读缓存，如果缓存有数据我们直接当做结果进行返回。如果结果中没有数据，在进行数据库查询，并将查询结果放回redis-cache中。当有足够的高的缓存命中率时，能很好减少到下游db的流量，从而达到保护db的目的<br>
 在写点赞数时，会把redis cache的数据进行删除，从而保证下次直读db，保证数据的一致性。***存在缓存设计的风险点，当缓存删除失败时，会造成缓存数据和db数据不一致，对于要求数据强一致的业务不能这么进行设计***
+此时架构为：
+{% img /image/2_webapp_struct_1.png %}
+在原来的基础上多了一层缓存
 ## 主从结构的分流设计 - 基于docker带有主从结构的redis 搭建
 至此，保护db的目的已经达到了。假设缓存流量持续上涨，缓存命中率也较高的情况下。redis-cache会成为新的瓶颈，除了在redis -cache 上在加一层在服务器上的local-cache外。我们还有第二个解决方案 ，进行主从结构的部署,（这里提供redis的解决方案，db也可以参考这种方案）。 redis 本身就支持主从结构的部署，只需要简单的命令 `redis-server --slaveof <$redis_master_host> <$redis_master_port>` 即可<br>
 
@@ -215,8 +222,10 @@ func getFromCache(resourceID int64) (int64, error) {
 }
 ```
 最后，写缓存流量在redis_master 主库上，读流量在从库上（从库如果有写操作会进行保存），大大减少redis master主库上的流量，从而达到分流的目的
-
-## 自动主从切换 - 基于docker的sentine 环境搭建
+此时的架构为：
+{% img /image/2_webapp_struct_2.png %}
+redis部署呈现主从结构
+## 自动主从切换 - 基于docker的sentinel 环境搭建
 通过以上两个设计，系统稳定性已经上升了一个档次。但，我们观察到，主库现在又面临着单点的问题。如果主库出现可用性问题，结果往往是灾难的。我们需要套机制来进行监控主库和稳定性和当出现问题时，能进行主从切换,我们依旧以redis为例
 sentinel作为最常用的redis 监控、主从切换工具而被广泛应用。首先，先进行sentinel配置的编写,保存为 sentinel.conf
 ```shell
@@ -227,11 +236,110 @@ dir /tmp  # 工作文件目录
 sentinel monitor master redis_master 6379 1 # 对redis主库进行监听 后面三个参数的意思分别是 ： 主库的host，主库的端口，当 1 个sentinel 检查出现错误后，自动进行主从切换
 sentinel down-after-milliseconds master 30000 # 心跳检查，当主库在30000 ms内没有应答，则认为其已经不可用，进行容灾操作
 ```
+在启动两个sentinel 服务容器
+```yml
+sentinel_1:
+        image: redis
+        ports:
+            - 7006:26379
+        restart: always
+        container_name: sentinel_1
+        networks:
+            - front
+        image: redis
+        volumes:
+            - ./conf:/data/conf
+        restart: always
+        command: redis-server /data/conf/sentinel.conf --sentinel   
 
+   sentinel_2:
+        image: redis
+        ports:
+            - 7005:26379
+        restart: always
+        container_name: sentinel_2
+        networks:
+            - front
+        image: redis
+        volumes:
+            - ./conf:/data/conf
+        restart: always
+        command: redis-server /data/conf/sentinel.conf --sentinel
+```
+` command: redis-server /data/conf/sentinel.conf --sentinel`  
+用这条命令启动一个sentinel服务，监控redis
+```shell
+docker-compose up -d 
+docker container ls -a 
+```
+重新部署和查看，我们看到两个sentinel 服务已经启动
+{%img /image/2_compose_ret3 %}
+在改写代码之前，我们手动测试下。
+1. `docker logs -f sentinel_1` 查看sentienl_1 容器中标准输出流的日志,看到redis主库的状态和地址<br>
+2.  `docker pause redis_master` 手动暂停一个容器，来模拟线上出现问题，sentinel进行的操作,可以看到，sentinel对我们的主库进行了切换。
+{%img /image/2_sentinel_log_1.png %}
+步骤1 结果
+{%img /image/2_sentinel_log_2.png %}
+步骤2 结果
 ### 代码改写
-### 结果验证
+在点赞项目中应用<br>
+获取redis-master地址方法
+```go
+package redis
+
+import (
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/garyburd/redigo/redis"
+)
+
+type Sentinel struct {
+	Name  string
+	Addrs []string
+}
+
+//为了试验方便，这里写死两个sentinel 地址，比较的做法是通过配置和服务发现中心的方式实现
+var DefaultSentinel Sentinel = Sentinel{
+	Name:  "default",
+	Addrs: []string{"sentinel_1:26379", "sentinel_2:26379"},
+}
+
+func (s *Sentinel) GetRedisConn() (redis.Conn, error) {
+
+	for _, addr := range s.Addrs { //防止一个sentinel挂掉,保证两个可用
+		sentinelConn, err := redis.DialTimeout("tcp", addr, 1*time.Second, 1*time.Second, 1*time.Second)
+		if err != nil {
+			continue
+		}
+		defer sentinelConn.Close()
+		res, err := redis.Strings(sentinelConn.Do("SENTINEL", "get-master-addr-by-name", "master")) //获取redis 主库的地址
+		log.Printf("redis_master_addr:%v", res)
+		if err != nil {
+			return nil, err
+		}
+
+		redisConn, err := redis.DialTimeout("tcp", fmt.Sprintf("%s:%s", res[0], res[1]), 1*time.Second, 1*time.Second, 1*time.Second)
+		if err != nil {
+			continue
+		}
+		return redisConn, nil
+	}
+	return nil, fmt.Errorf("sentinel err")
+}
+```
+此时的架构为：
+{% img /image/2_webapp_struct_3.png %}
+## 总结
+第二章相比起第二章来说，总体的业务功能并没有变化。但是其架构比起之前变得更加复杂，稳定性也得到了较好的保证。
+至此，我们项目的变化过程为:
+{%img /image/2_webapp_struct_4.png %}
 
 ## 生产环境中的注意点
+- 本章主要用redis来阐述如果通过改变整体架构来面对大流量场景，其实 mysql的也有类似的操作，在实际应用中常常是先解决mysql的单点问题。
+- 要结合自身业务分析架构的薄弱环境，在进行业务的改造
+- 代码中部分逻辑可以抽象成配置，用热加载的形式载入，而不是单纯的写死。连接下游时，也可以设计成用池的形式维护一个长连接。但是，这样设计代码会很复杂。可以根据使用场景进行选择
 
 
 
